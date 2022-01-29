@@ -94,6 +94,7 @@ docker
 uml
 HELP.md
 backups
+smdb2-testing
 
 /logs/
 

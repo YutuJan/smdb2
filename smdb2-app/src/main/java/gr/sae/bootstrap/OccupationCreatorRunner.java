@@ -124,7 +124,6 @@ public class OccupationCreatorRunner extends AbstractLogComponent implements Com
         personService.addPersonToMovieOccupation(
                 PERSON18_FIRST_NAME, PERSON18_LAST_NAME, MOVIE8_TITLE, String.valueOf(RoleType.ACTOR));
 
-
         personService.addPersonToEpisodeOccupation(
                 PERSON15_FIRST_NAME, PERSON15_LAST_NAME, EPISODE1_TITLE, String.valueOf(RoleType.ACTOR));
         personService.addPersonToEpisodeOccupation(

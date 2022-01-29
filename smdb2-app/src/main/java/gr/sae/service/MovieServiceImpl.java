@@ -173,7 +173,6 @@ public class MovieServiceImpl extends BaseServiceImpl<Movie> implements MovieSer
         }
 
         movie.addOccupation(occupation);
-        update(movie);
 
         logger.debug("Occupation[{}] added to Movie[{}]", occupation, movie);
     }

@@ -14,23 +14,25 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = "OCCUPATIONS",
-        uniqueConstraints = @UniqueConstraint(name = "UniqueVideoEntertainmentAndPerson",
-                columnNames = {"VIDEO_ENTERTAINMENT_ID", "PERSON_ID"}))
-@SequenceGenerator(name = "idGenerator", sequenceName = "OCCUPATIONS_SEQ", initialValue = 1, allocationSize = 1)
-public class Occupation extends BaseModel {
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "OCCUPATION", nullable = false)
-    private RoleType occupation;
+@Table(name = "OCCUPATIONS")
+public class Occupation {
+    @EmbeddedId
+    private OccupationKey key;
 
     @JsonBackReference("videoEntertainment")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "VIDEO_ENTERTAINMENT_ID", referencedColumnName = "ID")
+    @MapsId("videoEntertainmentId")
+    @JoinColumn(name = "VIDEO_ENTERTAINMENT_ID")
     private VideoEntertainment videoEntertainment;
 
     @JsonBackReference("person")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "PERSON_ID", referencedColumnName = "ID")
+    @MapsId("personId")
+    @JoinColumn(name = "PERSON_ID")
     private Person person;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "OCCUPATION", nullable = false)
+    private RoleType occupation;
 }

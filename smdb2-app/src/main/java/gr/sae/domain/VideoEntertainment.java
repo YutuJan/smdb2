@@ -17,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
+@SequenceGenerator(name = "idGenerator", sequenceName = "VIDEO_ENTERTAINMENTS_SEQ", initialValue = 1, allocationSize = 1)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class VideoEntertainment extends BaseModel {
     @NotNull(message = "Movie's title cannot be null")
@@ -47,7 +48,7 @@ public abstract class VideoEntertainment extends BaseModel {
     @JsonManagedReference("videoEntertainment")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "videoEntertainment", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Column(name = "CAST_N_CREW")
     protected Set<Occupation> occupations = new HashSet<>();
 

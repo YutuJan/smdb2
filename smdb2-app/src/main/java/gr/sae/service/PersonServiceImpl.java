@@ -114,10 +114,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void addPersonToMovieOccupation(Long personId, Long movieId, String roleType) {
         Person person = find(personId);
         Movie movie = movieService.find(movieId);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(movie.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(movie)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         addOccupation(person, movie, occupation);
@@ -127,10 +133,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void addPersonToMovieOccupation(String firstName, String lastName, String title, String roleType) {
         Person person = find(firstName, lastName);
         Movie movie = movieService.find(title);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(movie.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(movie)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         addOccupation(person, movie, occupation);
@@ -140,10 +152,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void removePersonToMovieOccupation(Long personId, Long movieId, String roleType) {
         Person person = find(personId);
         Movie movie = movieService.find(movieId);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(movie.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(movie)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         removeOccupation(person, movie, occupation);
@@ -153,10 +171,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void removePersonToMovieOccupation(String firstName, String lastName, String title, String roleType) {
         Person person = find(firstName, lastName);
         Movie movie = movieService.find(title);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(movie.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(movie)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         removeOccupation(person, movie, occupation);
@@ -166,10 +190,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void addPersonToEpisodeOccupation(Long personId, Long episodeId, String roleType) {
         Person person = find(personId);
         Episode episode = episodeService.find(episodeId);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(episode.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(episode)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         addOccupation(person, episode, occupation);
@@ -179,10 +209,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void addPersonToEpisodeOccupation(String firstName, String lastName, String title, String roleType) {
         Person person = find(firstName, lastName);
         Episode episode = episodeService.find(title);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(episode.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(episode)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         addOccupation(person, episode, occupation);
@@ -192,10 +228,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void removePersonToEpisodeOccupation(Long personId, Long episodeId, String roleType) {
         Person person = find(personId);
         Episode episode = episodeService.find(episodeId);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(episode.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(episode)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         removeOccupation(person, episode, occupation);
@@ -205,10 +247,16 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void removePersonToEpisodeOccupation(String firstName, String lastName, String title, String roleType) {
         Person person = find(firstName, lastName);
         Episode episode = episodeService.find(title);
+
+        OccupationKey occupationKey = OccupationKey.builder()
+                .personId(person.getId())
+                .videoEntertainmentId(episode.getId())
+                .build();
         Occupation occupation = Occupation.builder()
                 .person(person)
                 .videoEntertainment(episode)
                 .occupation(RoleType.valueOf(roleType))
+                .key(occupationKey)
                 .build();
 
         removeOccupation(person, episode, occupation);
@@ -221,7 +269,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
         }
 
         person.addOccupation(occupation);
-        update(person);
+        //update(person);
 
         logger.debug("Occupation[{}] added to Person[{}]", occupation, person);
     }
@@ -239,9 +287,9 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     }
 
     private void addOccupation(Person person, Movie movie, Occupation occupation) {
-        occupationRepository.save(occupation);
         addOccupation(person, occupation);
         movieService.addOccupation(movie, occupation);
+        occupationRepository.save(occupation);
     }
 
     private void removeOccupation(Person person, Movie movie, Occupation occupation) {

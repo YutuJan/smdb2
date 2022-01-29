@@ -16,7 +16,6 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Entity
 @Table(name = "MOVIES")
-@SequenceGenerator(name = "idGenerator", sequenceName = "MOVIES_SEQ", initialValue = 1, allocationSize = 1)
 public class Movie extends VideoEntertainment {
     @EqualsAndHashCode.Exclude
     @ElementCollection

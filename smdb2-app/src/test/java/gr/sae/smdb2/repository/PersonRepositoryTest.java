@@ -3,6 +3,7 @@ package gr.sae.smdb2.repository;
 import gr.sae.base.AbstractLogComponent;
 import gr.sae.domain.Person;
 import gr.sae.repository.PersonRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class PersonRepositoryTest extends AbstractLogComponent {
@@ -58,10 +60,13 @@ class PersonRepositoryTest extends AbstractLogComponent {
             " and in his own life, Anthony Quinn became one of cinema's most beloved and respected actors in a" +
             " career that spanned nearly 70 years and more than a 150 memorable performances. ";
 
-    @Test
-    void itShouldGetPersonByFirstNameAndLastName() {
+    @BeforeEach
+    void setUp() {
         createBunchOfPeople();
+    }
 
+    @Test
+    void ensureGetPersonByFirstNameAndLastName() {
         // given
         String firstName = "Chris";
         String lastName = "Tucker";
@@ -70,15 +75,14 @@ class PersonRepositoryTest extends AbstractLogComponent {
         Person person = personRepository.getPersonByFirstNameAndLastName(firstName, lastName);
 
         // then
-        assertThat(person).isNotNull();
-        assertThat(firstName).isEqualTo(person.getFirstName());
-        assertThat(lastName).isEqualTo(person.getLastName());
+        assertAll("Ensure that the repository gets the right person.",
+                () -> assertNotNull(person, "Repository must not return a null value."),
+                () -> assertEquals(firstName, person.getFirstName(), "First name must be " + firstName + "."),
+                () -> assertEquals(lastName, person.getLastName(), "Last name must be " + lastName + "."));
     }
 
     @Test
-    void itShouldFindPersonByFirstNameAndLastName() {
-        createBunchOfPeople();
-
+    void ensureFindPersonByFirstNameAndLastName() {
         // given
         String firstName = "Chris";
         String lastName = "Tucker";
@@ -87,9 +91,10 @@ class PersonRepositoryTest extends AbstractLogComponent {
         Person person = personRepository.findPersonByFirstNameAndLastName(firstName, lastName);
 
         // then
-        assertThat(person).isNotNull();
-        assertThat(firstName).isEqualTo(person.getFirstName());
-        assertThat(lastName).isEqualTo(person.getLastName());
+        assertAll("Ensure that the repository finds the right person.",
+                () -> assertNotNull(person, "Repository must not return a null value."),
+                () -> assertEquals(firstName, person.getFirstName(), "First name must be " + firstName + "."),
+                () -> assertEquals(lastName, person.getLastName(), "Last name must be " + lastName + "."));
     }
 
     private void createBunchOfPeople() {

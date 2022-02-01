@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class EpisodeRepositoryTest extends AbstractLogComponent {
@@ -73,8 +73,9 @@ class EpisodeRepositoryTest extends AbstractLogComponent {
         Episode episode = episodeRepository.findEpisodeByTitle(title);
 
         // then
-        assertThat(episode).isNotNull();
-        assertThat(title).isEqualTo(episode.getTitle());
+        assertAll("Ensure that the repository finds the the right episode.",
+                () -> assertNotNull(episode, "Repository must not return a null value."),
+                () -> assertEquals(title, episode.getTitle(), "Episode's title must be " + title + "."));
     }
 
     @Test
@@ -86,8 +87,9 @@ class EpisodeRepositoryTest extends AbstractLogComponent {
         Episode episode = episodeRepository.getEpisodeByTitle(title);
 
         // then
-        assertThat(episode).isNotNull();
-        assertThat(title).isEqualTo(episode.getTitle());
+        assertAll("Ensure that the repository gets the the right episode.",
+                () -> assertNotNull(episode, "Repository must not return a null value."),
+                () -> assertEquals(title, episode.getTitle(), "Episode's title must be " + title + "."));
     }
 
     @Test

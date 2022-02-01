@@ -63,8 +63,9 @@ class MovieRepositoryTest extends AbstractLogComponent {
         Movie movie = movieRepository.findMovieByTitle(title);
 
         // then
-        assertThat(movie).isNotNull();
-        assertThat(title).isEqualTo(movie.getTitle());
+        assertAll("Ensure that the repository finds the the right movie.",
+                () -> assertNotNull(movie, "Repository must not return a null value."),
+                () -> assertEquals(title, movie.getTitle(), "Movie's title must be " + title + "."));
     }
 
     @Test
@@ -76,8 +77,9 @@ class MovieRepositoryTest extends AbstractLogComponent {
         Movie movie = movieRepository.getMovieByTitle(title);
 
         // then
-        assertThat(movie).isNotNull();
-        assertThat(title).isEqualTo(movie.getTitle());
+        assertAll("Ensure that the repository gets the the right movie.",
+                () -> assertNotNull(movie, "Repository must not return a null value."),
+                () -> assertEquals(title, movie.getTitle(), "Movie's title must be " + title + "."));
     }
 
     @Test

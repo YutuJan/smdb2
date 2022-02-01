@@ -7,6 +7,8 @@ import gr.sae.domain.Series;
 import gr.sae.domain.SeriesCategory;
 import gr.sae.repository.EpisodeRepository;
 import gr.sae.repository.SeriesRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 class EpisodeRepositoryTest extends AbstractLogComponent {
@@ -54,10 +57,15 @@ class EpisodeRepositoryTest extends AbstractLogComponent {
     private final String EPISODE_TITLE_003 = "The One Where Monica Gets a Roommate";
     private final String EPISODE_TITLE_004 = "The One with the Sonogram at the End";
 
-    @Test
-    void findEpisodeByTitle() {
-        createBunchOfSeriesAndEpisodes();
+    List<Episode> episodes;
 
+    @BeforeEach
+    void setUp() {
+        createBunchOfSeriesAndEpisodes();
+    }
+
+    @Test
+    void ensureFindEpisodeByTitle() {
         // given
         String title = EPISODE_TITLE_003;
 
@@ -70,9 +78,7 @@ class EpisodeRepositoryTest extends AbstractLogComponent {
     }
 
     @Test
-    void getEpisodeByTitle() {
-        createBunchOfSeriesAndEpisodes();
-
+    void ensureGetEpisodeByTitle() {
         // given
         String title = EPISODE_TITLE_003;
 
@@ -84,8 +90,21 @@ class EpisodeRepositoryTest extends AbstractLogComponent {
         assertThat(title).isEqualTo(episode.getTitle());
     }
 
+    @Test
+    void ensureFindFirstByOrderByRatingDesc() {
+        // given
+        String titleOfEpisodeWithHighestRating = EPISODE_TITLE_001;
+
+        // when
+        Episode episode = episodeRepository.findFirstByOrderByRatingDesc();
+
+        // then
+        assertEquals(titleOfEpisodeWithHighestRating, episode.getTitle(),
+                "Episode's title must be same with the title of the highest rated episode");
+    }
+
     private void createBunchOfSeriesAndEpisodes() {
-        List<Episode> episodes = List.of(
+        episodes = List.of(
                 Episode.builder()
                         .title(EPISODE_TITLE_001)
                         .summary(SUMMARY_000)

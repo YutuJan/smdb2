@@ -7,7 +7,13 @@ import gr.sae.domain.Series;
 import gr.sae.domain.SeriesCategory;
 import gr.sae.repository.EpisodeRepository;
 import gr.sae.repository.SeriesRepository;
+import gr.sae.transfer.MoviesAndSeriesPerGenreDto;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -15,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class SeriesRepositoryTest extends AbstractLogComponent {
@@ -54,10 +60,13 @@ class SeriesRepositoryTest extends AbstractLogComponent {
     private final String EPISODE_TITLE_003 = "The One Where Monica Gets a Roommate";
     private final String EPISODE_TITLE_004 = "The One with the Sonogram at the End";
 
-    @Test
-    void findSeriesByTitle() {
+    @BeforeEach
+    void setUp() {
         createBunchOfSeriesAndEpisodes();
+    }
 
+    @Test
+    void ensureFindSeriesByTitle() {
         // given
         String title = SERIES_TITLE_002;
 
@@ -65,23 +74,62 @@ class SeriesRepositoryTest extends AbstractLogComponent {
         Series series = seriesRepository.findByTitle(title);
 
         // then
-        assertThat(series).isNotNull();
-        assertThat(title).isEqualTo(series.getTitle());
+        assertAll("Ensure that the repository finds the right series.",
+                () -> assertNotNull(series, "Repository must not return a null value."),
+                () -> assertEquals(title, series.getTitle(), "Series' title must be " + title + "."));
     }
 
     @Test
-    void getSeriesByTitle() {
-        createBunchOfSeriesAndEpisodes();
-
+    void ensureGetSeriesByTitle() {
         // given
         String title = SERIES_TITLE_002;
 
         // when
-        Series series = seriesRepository.getByTitle("title");
+        Series series = seriesRepository.getByTitle(title);
 
         // then
-        assertThat(series).isNotNull();
-        assertThat(title).isEqualTo(series.getTitle());
+        assertAll("Ensure that the repository gets the right series.",
+                () -> assertNotNull(series, "Repository must not return a null value."),
+                () -> assertEquals(title, series.getTitle(), "Series' title must be " + title + "."));
+    }
+
+    @Test
+    void ensureFindSeriesByGenresContaining() {
+        // given
+        String title = SERIES_TITLE_002;
+
+        // when
+        List<Series> series = seriesRepository.findSeriesByGenresContaining(Genre.COMEDY);
+
+        // then
+        assertAll("Ensure that the repository returns the right series.",
+                () -> assertNotNull(series, "Repository must not return a null value."),
+                () -> assertEquals(title, series.get(0).getTitle(), "Series' title must be " + title + "."),
+                () -> assertEquals(1, series.size(), "Repository must return a list of size 1."));
+    }
+
+    @DisplayName("Grouped tests for checking SeriesRepository.findSeriesPerGenre() method.")
+    @Nested
+    class EnsureFindSeriesByGenresContaining {
+        @ParameterizedTest(name = "moviesAndSeriesPerGenre.get({0}).getGenre() == {1}")
+        @CsvSource({"0, COMEDY", "1, CRIME", "2, DRAMA", "3, MYSTERY", "4, THRILLER"})
+        void ensureGenreFromFindSeriesPerGenre(int position, String genre) {
+            // when
+            List<MoviesAndSeriesPerGenreDto> moviesAndSeriesPerGenre = seriesRepository.findSeriesPerGenre();
+
+            // then
+            assertEquals(moviesAndSeriesPerGenre.get(position).getGenre().toString(), genre);
+        }
+
+        @ParameterizedTest(name = "moviesAndSeriesPerGenre.get({0}).getCount() == {2}")
+        @CsvSource({"0, 1", "1, 1", "2, 1", "3, 1", "4, 1"})
+        void ensureCountFromFindSeriesPerGenre(int position, int count) {
+            // when
+            List<MoviesAndSeriesPerGenreDto> moviesAndSeriesPerGenre = seriesRepository.findSeriesPerGenre();
+
+            // then
+            assertEquals(moviesAndSeriesPerGenre.get(position).getCount(), count);
+        }
     }
 
     private void createBunchOfSeriesAndEpisodes() {

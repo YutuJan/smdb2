@@ -1,4 +1,4 @@
-package gr.sae.smdb2.repository;
+package gr.sae.smdb2.unit.repository;
 
 import gr.sae.base.AbstractLogComponent;
 import gr.sae.domain.Episode;
@@ -7,7 +7,6 @@ import gr.sae.domain.Series;
 import gr.sae.domain.SeriesCategory;
 import gr.sae.repository.EpisodeRepository;
 import gr.sae.repository.SeriesRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class EpisodeRepositoryTest extends AbstractLogComponent {
+class EpisodeRepositoryUnitTest extends AbstractLogComponent {
     @Autowired
     private EpisodeRepository episodeRepository;
     @Autowired

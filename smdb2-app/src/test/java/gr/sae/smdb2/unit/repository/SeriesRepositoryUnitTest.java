@@ -1,4 +1,4 @@
-package gr.sae.smdb2.repository;
+package gr.sae.smdb2.unit.repository;
 
 import gr.sae.base.AbstractLogComponent;
 import gr.sae.domain.Episode;
@@ -24,7 +24,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class SeriesRepositoryTest extends AbstractLogComponent {
+class SeriesRepositoryUnitTest extends AbstractLogComponent {
     @Autowired
     private EpisodeRepository episodeRepository;
     @Autowired

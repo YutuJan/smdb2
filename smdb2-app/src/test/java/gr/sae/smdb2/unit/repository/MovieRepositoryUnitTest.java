@@ -1,4 +1,4 @@
-package gr.sae.smdb2.repository;
+package gr.sae.smdb2.unit.repository;
 
 import gr.sae.base.AbstractLogComponent;
 import gr.sae.domain.Genre;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class MovieRepositoryTest extends AbstractLogComponent {
+class MovieRepositoryUnitTest extends AbstractLogComponent {
     @Autowired
     private MovieRepository movieRepository;
 

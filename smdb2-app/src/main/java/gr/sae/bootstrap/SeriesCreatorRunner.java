@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "test"})
 @RequiredArgsConstructor
 public class SeriesCreatorRunner extends AbstractLogComponent implements CommandLineRunner {
     private final SeriesService seriesService;

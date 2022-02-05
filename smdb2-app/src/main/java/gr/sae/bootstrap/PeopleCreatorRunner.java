@@ -1,9 +1,11 @@
 package gr.sae.bootstrap;
 
+
 import gr.sae.base.AbstractLogComponent;
 import gr.sae.domain.Person;
 import gr.sae.service.PersonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -12,10 +14,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-@Profile({"dev"})
+@Profile({"dev", "test"})
 @RequiredArgsConstructor
 public class PeopleCreatorRunner extends AbstractLogComponent implements CommandLineRunner {
-    private final PersonService personService;
+    @Autowired private PersonService personService;
 
     private final String BIO_000 = "After first establishing his martial arts prowess in his native Hong Kong," +
             " actor-choreographer-director Jackie Chan took his massive success in Southeast Asia and became a" +

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "test"})
 @RequiredArgsConstructor
 public class MovieCreatorRunner extends AbstractLogComponent implements CommandLineRunner {
     private final MovieService movieService;
